@@ -1,152 +1,117 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>THOK – Games</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pausen-Portal</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0f0f12; color: white; text-align: center; margin: 0; }
+        header { background: #1a1a2e; padding: 20px; border-bottom: 3px solid #00d4ff; }
+        .container { padding: 20px; }
+        
+        /* Spiele-Karten */
+        .game-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; padding: 20px; }
+        .card { background: #161625; border-radius: 15px; padding: 15px; border: 1px solid #333; }
+        iframe { width: 100%; height: 400px; border: none; border-radius: 10px; }
 
-<style>
-:root {
-  --bg: #0f0f0f;
-  --card: #1c1c1c;
-  --accent: #ff0055;
-  --text: #ffffff;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-/* HEADER */
-header {
-  padding: 1rem;
-  text-align: center;
-  font-size: 2rem;
-  font-weight: bold;
-  background: #151515;
-  border-bottom: 2px solid var(--accent);
-}
-
-/* GAME GRID */
-#home {
-  padding: 1.5rem;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 1.5rem;
-}
-
-.game {
-  background: var(--card);
-  border-radius: 12px;
-  overflow: hidden;
-  transition: transform 0.2s;
-  border: 2px solid #222;
-}
-
-.game:hover {
-  transform: scale(1.05);
-}
-
-.game img {
-  width: 100%;
-  height: 130px;
-  object-fit: cover;
-}
-
-.game button {
-  width: 100%;
-  padding: 0.7rem;
-  border: none;
-  background: var(--accent);
-  color: white;
-  font-size: 1rem;
-  cursor: pointer;
-}
-
-/* PLAYER */
-#player {
-  display: none;
-  height: calc(100vh - 70px);
-}
-
-#player iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
-}
-
-/* BACK BUTTON */
-#back {
-  display: none;
-  padding: 0.7rem;
-  background: var(--accent);
-  border: none;
-  color: white;
-  width: 100%;
-  font-size: 1rem;
-  cursor: pointer;
-}
-</style>
+        /* Scoreboard & Login */
+        .admin-section { background: #1e1e30; margin: 20px auto; padding: 20px; border-radius: 15px; max-width: 600px; }
+        input { padding: 10px; border-radius: 5px; border: none; margin: 5px; }
+        button { padding: 10px 20px; border-radius: 5px; border: none; background: #00d4ff; color: black; font-weight: bold; cursor: pointer; }
+        
+        table { width: 100%; margin-top: 20px; border-collapse: collapse; }
+        th, td { padding: 10px; border-bottom: 1px solid #444; }
+        .hidden { display: none; }
+    </style>
 </head>
-
 <body>
 
-<header>THOK</header>
+<header>
+    <h1>🚀 Schul-iPad Bypass Portal</h1>
+    <p>Spiele laufen direkt im Browser</p>
+</header>
 
-<button id="back" onclick="goHome()">⬅ Zurück</button>
+<div class="container">
+    <div id="login-area" class="admin-section">
+        <h3>🔑 Login für Scoreboard</h3>
+        <input type="text" id="username" placeholder="Dein Username">
+        <button onclick="login()">Anmelden</button>
+    </div>
 
-<!-- HOME -->
-<div id="home">
+    <div id="user-welcome" class="admin-section hidden">
+        <h3 id="welcome-msg"></h3>
+        <p>Dein Highscore eintragen:</p>
+        <input type="number" id="new-score" placeholder="Punkte">
+        <button onclick="addScore()">Score speichern</button>
+    </div>
 
-  <div class="game">
-    <img src="https://sslcdn.topspiele.de/cnt_img/static/Candy_Time_v2/Thumb.png">
-    <button onclick="play('https://sslcdn.topspiele.de/cnt_img/static/Candy_Time_v2/')">
-      Candy Time
-    </button>
-  </div>
+    <div class="admin-section">
+        <h3>🏆 Subway Surfer Rekorde (Lokal)</h3>
+        <table>
+            <thead>
+                <tr><th>Platz</th><th>Name</th><th>Punkte</th></tr>
+            </thead>
+            <tbody id="leaderboard-body">
+                </tbody>
+        </table>
+    </div>
 
-  <div class="game">
-    <img src="https://jawalgames.com/img/english/game-tetris.png">
-    <button onclick="play('https://jawalgames.com/cgm/english/game-tetris/')">
-      Tetris
-    </button>
-  </div>
+    <div class="game-grid">
+        <div class="card">
+            <h2>Subway Surfers</h2>
+            <iframe src="https://poki.com/de/g/subway-surfers"></iframe>
+        </div>
 
-  <div class="game">
-    <img src="https://www.madkidgames.com/game/mad-day-truck-distance-game/thumbnail.jpg">
-    <button onclick="play('https://www.madkidgames.com/full/mad-day-truck-distance-game')">
-      Mad Day Truck
-    </button>
-  </div>
-
-</div>
-
-<!-- PLAYER -->
-<div id="player">
-  <iframe id="gameFrame" allowfullscreen></iframe>
+        <div class="card">
+            <h2>Brawl Stars (Web)</h2>
+            <iframe src="https://www.google.com/logos/2010/pacman10-i.html"></iframe>
+            <p><small>Hinweis: Echte Supercell-Spiele brauchen oft Cloud-Gaming (z.B. now.gg).</small></p>
+        </div>
+        
+        <div class="card">
+            <h2>Clash Royale Infos</h2>
+            <p>Clash Royale benötigt die App. Tipp: Nutze <a href="https://now.gg" style="color: cyan;">now.gg</a> im Browser, um das Originalspiel ohne Installation zu starten.</p>
+        </div>
+    </div>
 </div>
 
 <script>
-function play(url) {
-  document.getElementById("home").style.display = "none";
-  document.getElementById("player").style.display = "block";
-  document.getElementById("back").style.display = "block";
-  document.getElementById("gameFrame").src = url;
-}
+    let currentUser = "";
+    let scores = JSON.parse(localStorage.getItem('scores')) || [
+        {name: "Jake", score: 1000000},
+        {name: "Tricky", score: 850000}
+    ];
 
-function goHome() {
-  document.getElementById("player").style.display = "none";
-  document.getElementById("home").style.display = "grid";
-  document.getElementById("back").style.display = "none";
-  document.getElementById("gameFrame").src = "";
-}
+    function updateLeaderboard() {
+        const tbody = document.getElementById('leaderboard-body');
+        tbody.innerHTML = "";
+        scores.sort((a, b) => b.score - a.score);
+        scores.forEach((s, index) => {
+            tbody.innerHTML += `<tr><td>${index+1}</td><td>${s.name}</td><td>${s.score.toLocaleString()}</td></tr>`;
+        });
+    }
+
+    function login() {
+        const user = document.getElementById('username').value;
+        if(user) {
+            currentUser = user;
+            document.getElementById('login-area').classList.add('hidden');
+            document.getElementById('user-welcome').classList.remove('hidden');
+            document.getElementById('welcome-msg').innerText = "Hallo, " + user + "!";
+        }
+    }
+
+    function addScore() {
+        const scoreVal = parseInt(document.getElementById('new-score').value);
+        if(scoreVal) {
+            scores.push({name: currentUser, score: scoreVal});
+            localStorage.setItem('scores', JSON.stringify(scores));
+            updateLeaderboard();
+            alert("Score gespeichert!");
+        }
+    }
+
+    updateLeaderboard();
 </script>
 
 </body>
